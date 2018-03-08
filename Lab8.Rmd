@@ -1,0 +1,34 @@
+---
+title: "Wk8"
+author: "Gonzalo Banda-Cruz"
+date: "8 March 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Point pattern analyses
+load the packages
+```{r}
+library(pacman)
+pacman::p_load(tidyverse, sf, tmap, leaflet, spatstat, maptools)
+```
+
+##column groah of texas oil spills
+```{r}
+oilspills <- read_csv("oil_spills.csv")
+
+df <- oilspills %>% 
+  filter(`Accident State` == "TX" & `Accident Year` < 2017) %>% 
+  group_by(`Accident Year`) %>% 
+  summarise(Loss = sum(`Net Loss (Barrels)`))
+#the inverted apostrophes are needed if there are spaces in the column names
+
+colnames(df) <-  c("year", "loss")
+
+ggplot(df, aes(x=year, y=loss))+
+  geom_col()
+```
+
