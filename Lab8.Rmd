@@ -48,8 +48,41 @@ leaflet(oil_sf) %>%
   addTiles() %>% 
   addMarkers() 
 
+```
+
+## make a tmap plot with the TX shapefile
+```{r}
+#read the shpafile and indicate directory "."
+
+states <- st_read(dsn = ".", layer = "states")
+
+tex_border <- states %>% 
+  filter(STATE_NAME == "Texas") %>% 
+  st_transform(4326)
+
+plot(tex_border)
+
+tm_shape(tex_border)+
+  tm_polygons()+
+  tm_shape(oil_sf)+
+  tm_dots(size = 0.3)
 
 ```
+## convert the data to spatial point patterns (conbination of point data and the bounding window)
+
+```{r}
+
+spill_spatial <- as(oil_sf, "Spatial") #making sure r understands this is data for point pattern analyses
+
+spill_ppp <- as(spill_spatial, "ppp")
+
+tx_sp <- as(tex_border, "Spatial")
+tx_owin <- as(tx_sp, "owin")
+
+all_ppp <- ppp(spill_ppp$x, spill_ppp$y, window = tx_owin)
+
+```
+
 
 
 
