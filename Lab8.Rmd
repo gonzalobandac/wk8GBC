@@ -83,6 +83,13 @@ all_ppp <- ppp(spill_ppp$x, spill_ppp$y, window = tx_owin)
 
 ```
 
+### density plot
+
+```{r}
+
+plot(density(all_ppp, sigma = 0.4))
+
+```
 
 
 
