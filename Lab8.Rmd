@@ -91,6 +91,41 @@ plot(density(all_ppp, sigma = 0.4))
 
 ```
 
+#quadrat test for spatial evenness
+
+```{r}
+oil_qt <- quadrat.test(all_ppp, nx = 5, ny = 5)
+oil_qt #data not evennly dsitributed
+
+#graphycally oil_qt is doing this:
+plot(all_ppp)
+plot(oil_qt, add= TRUE, cex = 0.4)
+```
+
+#G-function for nearest neighbor analyses
+
+```{r}
+r <- seq(0,1, by=0.01)
+
+oil_gfun <- envelope(all_ppp, fun = Gest, r = r, nsim = 100)
+
+ggplot(oil_gfun, aes(x=r, y=obs)) +
+  geom_line(color = "black")+
+  geom_line(aes(x=r, y=theo), color="red")
+```
+
+# nearest neighbor using the L-function (Ripley's K, standardized)
+```{r}
+
+r2 <- seq(0,3, by=0.5)
+oil_lfun <- envelope(all_ppp, fun = Lest, r= r2, nsim = 20)
+
+ggplot(oil_lfun, aes(x=r2, y=obs)) +
+  geom_line(color = "black")+
+  geom_line(aes(x=r2, y=theo), color="blue")
+
+
+```
 
 
 
